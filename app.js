@@ -23,6 +23,10 @@ function writeData(data){
 
 function addExpanse(options){
     const data =readData()
+    if(options.amount<0){
+        console.error("you can't enter negative data in expanse amount")
+        return
+    }
      const newExpanse= {
         id:data.length+1,
         date:new Date().toISOString().split('T')[0],
@@ -34,7 +38,6 @@ function addExpanse(options){
  }
 
  function listExpanse(){
-      
 
     const data =readData()
 
@@ -48,7 +51,42 @@ function addExpanse(options){
     }
  }
 
+function getSummary(){
+    const data= readData()
+    const total= data.reduce((a,b) =>
+        a+b.amount
+    ,0);
+    console.log(total)
+}
 
+function deleteExpanse(options){
+    const data= readData()
+    const newList= data.filter(x=>{
+    return x.Id!=options.id
+    })
+    if (newList.length === data.length) {
+        console.log('No expense found with the given ID.');
+    } else {
+        console.log('Deleted successfully.');
+    }
+    writeData(newList)
+}
+
+function getSummaryOfSpecificMonth(options)
+{
+
+    if( options.month>12 || options.month<=0){
+         console.log("unvalid month please enter between 1-12")
+         return
+    }
+    const data= readData()
+
+    const filteredList= data.filter(x=>{
+      return new Date(x.date).getMonth()+1==Number(options.month)
+    })
+    const total = filteredList.reduce((a,b)=>a+b.amount,0)
+    console.log(total)
+}
 program
 .command('add')
 .description('add a new decription')
@@ -64,44 +102,19 @@ program
 program
 .command('summary')
 .description('summury all data')
-.action(()=>{
-    const data= readData()
-    const total= data.reduce((a,b) =>
-        a+b.amount
-    ,0);
-    console.log(total)
-})
+.action(getSummary)
 
 program
 .command('delete')
 .description('delete  specific data')
 .requiredOption('--id <id>','Id which will delete')
-.action((options)=>{
-    console.log(options.id)
-    const data= readData()
-    const newList= data.filter(x=>{
-    return x.Id!=options.id
-    })
-    if (newList.length === data.length) {
-        console.log('No expense found with the given ID.');
-    } else {
-        console.log('Deleted successfully.');
-    }
-    writeData(newList)
-   
-})
+.action(deleteExpanse)
+
+
 program
 .command('summary-month')
 .description('summary of this month')
 .requiredOption('--month <date>','the summary of the month')
-.action((options)=>{
-    console.log(options.month)
-    const data= readData()
-    const filteredList= data.filter(x=>{
-      return Number(x.date.slice(5,7))==Number(options.month)
-    })
-    const total = filteredList.reduce((a,b)=>a+b.amount,0)
-    console.log(total)
-})
+.action(getSummaryOfSpecificMonth)
 
 program.parse(process.argv);
