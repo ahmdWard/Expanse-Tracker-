@@ -90,5 +90,18 @@ program
     writeData(newList)
    
 })
+program
+.command('summary-month')
+.description('summary of this month')
+.requiredOption('--month <date>','the summary of the month')
+.action((options)=>{
+    console.log(options.month)
+    const data= readData()
+    const filteredList= data.filter(x=>{
+      return Number(x.date.slice(5,7))==Number(options.month)
+    })
+    const total = filteredList.reduce((a,b)=>a+b.amount,0)
+    console.log(total)
+})
 
 program.parse(process.argv);
