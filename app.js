@@ -28,11 +28,12 @@ function addExpanse(options){
         return
     }
      const newExpanse= {
-        id:data.length+1,
+        id: data.length > 0 ? Math.max(...data.map(el=>el.id))+1 : 1,
         date:new Date().toISOString().split('T')[0],
         description:options.description,
         amount:parseFloat(options.amount)
      }
+     console.log(newExpanse)
      data.push(newExpanse)
      writeData(data)
  }
@@ -62,7 +63,7 @@ function getSummary(){
 function deleteExpanse(options){
     const data= readData()
     const newList= data.filter(x=>{
-    return x.Id!=options.id
+    return x.id!=options.id
     })
     if (newList.length === data.length) {
         console.log('No expense found with the given ID.');
@@ -87,6 +88,7 @@ function getSummaryOfSpecificMonth(options)
     const total = filteredList.reduce((a,b)=>a+b.amount,0)
     console.log(total)
 }
+
 program
 .command('add')
 .description('add a new decription')
