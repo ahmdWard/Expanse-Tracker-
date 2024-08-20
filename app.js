@@ -31,11 +31,19 @@ function addExpanse(options){
         id: data.length > 0 ? Math.max(...data.map(el=>el.id))+1 : 1,
         date:new Date().toISOString().split('T')[0],
         description:options.description,
-        amount:parseFloat(options.amount)
+        category:options.category,
+        amount:parseFloat(options.amount),
      }
      console.log(newExpanse)
      data.push(newExpanse)
-     writeData(data)
+     total =data.reduce((a,b) =>
+        a+b.amount
+    ,0);
+    if(total>1500)
+        console.log("you exceeds the budget")
+    else{
+        writeData(data)
+    }
  }
 
  function listExpanse(){
@@ -45,9 +53,9 @@ function addExpanse(options){
     if(!data.length)
          console.log('no expanse found')
     else{
-        console.log(" ID    Date            Description         Amount")
+        console.log(" ID    Date            Description        Categery       Amount")
         data.forEach(el => {
-            console.log(` ${el.Id}   ${el.date}        ${el.description}                ${el.amount}`)
+            console.log(` ${el.Id}   ${el.date}        ${el.description}        ${el.categery}               ${el.amount}`)
         });
     }
  }
@@ -58,6 +66,22 @@ function getSummary(){
         a+b.amount
     ,0);
     console.log(total)
+}
+
+function getSummaryBasedOnCat(options){
+
+  const data = readData()
+
+  if(!data.some(el=>el.category==options.category)){
+    console.log("there isn't category with this name in your expanse")
+    return
+  }
+
+  const filterList= data.filter(el=>{
+    return el.category==options.category
+  })
+  const total = filterList.reduce((a,b)=> a+b.amount,0)
+  console.log(total)
 }
 
 function deleteExpanse(options){
@@ -103,6 +127,8 @@ function updateExpanse(options){
     if(options.id==el.id){
         if(options.description!=undefined)
              el.description=options.description
+        if(options.category!=undefined&&!isNaN(options.category))
+            el.amount=parseFloat(options.amount)
         if(options.amount!=undefined&&!isNaN(options.amount))
             el.amount=parseFloat(options.amount)
     }
@@ -116,7 +142,9 @@ program
 .command('add')
 .description('add a new decription')
 .requiredOption('--description <desc> ','Description of the expense')
+.requiredOption('--category <cat>','category of expanse')
 .requiredOption('--amount <amount>','Amount of the expense')
+
 .action(addExpanse)
 
 program
@@ -142,12 +170,18 @@ program
 .requiredOption('--month <date>','the summary of the month')
 .action(getSummaryOfSpecificMonth)
 
+program
+.command('summary-category')
+.description('summary all of the category')
+.requiredOption('--category <cat>','the category of the expanses')
+.action(getSummaryBasedOnCat)
 
 program
 .command('update')
 .description('update the expanse')
 .option('--id <id>' , 'getting id of the expanse')
 .option('--description <desc>' , 'updating discription')
+.option('--category <cat>','updating the cat exspance')
 .option('--amount <amount>','updating the amount exspance')
 .action(updateExpanse)
 
