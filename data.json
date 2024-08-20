@@ -1,1 +1,1 @@
-[{"Id":1,"date":"2024-08-19","amount":20},{"Id":2,"date":"2024-08-19","description":"lunch","amount":20}]
+[{"id":1,"date":"2024-08-20","description":"Lunch","category":"food","amount":708},{"id":2,"date":"2024-08-20","description":"Lunch","category":"food","amount":708},{"id":3,"date":"2024-08-20","description":"Lunch","category":"kolo","amount":20}]

@@ -7,7 +7,7 @@ const program = new Command();
 
 
 const dataPath = path.join(__dirname, 'data.json');
-
+const csvPath = path.join(__dirname, 'data.csv');
 function readData(){
     if(!fs.existsSync(dataPath))
        return []
@@ -20,6 +20,26 @@ function writeData(data){
    fs.writeFileSync(dataPath,JSON.stringify(data),'utf-8')
 }
 
+function writeCvs(){
+    const data=readData()
+    const headers=Object.keys(data[0])
+    const cvsRows=[headers.join(',')]
+    data.forEach(row => {
+        const values = headers.map(header => JSON.stringify(row[header] || ""));
+        cvsRows.push(values.join(','));
+    });
+    fs.writeFileSync(csvPath,cvsRows.join("\r\n"),'utf-8')
+
+}
+function exportToCsv() {
+    const data = readData();
+    if (data.length === 0) {
+        console.log('No data available to export.');
+        return;
+    }
+
+    writeCvs(data);
+}
 
 function addExpanse(options){
     const data =readData()
@@ -185,6 +205,10 @@ program
 .option('--amount <amount>','updating the amount exspance')
 .action(updateExpanse)
 
+program
+    .command('export-csv')
+    .description('Export JSON data to CSV')
+    .action(exportToCsv);
 
 
 program.parse(process.argv);
