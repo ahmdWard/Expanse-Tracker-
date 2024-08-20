@@ -89,6 +89,29 @@ function getSummaryOfSpecificMonth(options)
     console.log(total)
 }
 
+function updateExpanse(options){
+
+   const data = readData()
+   
+
+   if(!data.some(el=>el.id==options.id)){
+    console.log('this id not exist')
+    return
+   }
+
+   data.forEach(el=>{
+    if(options.id==el.id){
+        if(options.description!=undefined)
+             el.description=options.description
+        if(options.amount!=undefined&&!isNaN(options.amount))
+            el.amount=parseFloat(options.amount)
+    }
+   })
+   console.log(data)
+   writeData(data)
+
+}
+
 program
 .command('add')
 .description('add a new decription')
@@ -118,5 +141,16 @@ program
 .description('summary of this month')
 .requiredOption('--month <date>','the summary of the month')
 .action(getSummaryOfSpecificMonth)
+
+
+program
+.command('update')
+.description('update the expanse')
+.option('--id <id>' , 'getting id of the expanse')
+.option('--description <desc>' , 'updating discription')
+.option('--amount <amount>','updating the amount exspance')
+.action(updateExpanse)
+
+
 
 program.parse(process.argv);
