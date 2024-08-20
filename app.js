@@ -55,7 +55,7 @@ function addExpanse(options){
     else{
         console.log(" ID    Date            Description        Categery       Amount")
         data.forEach(el => {
-            console.log(` ${el.Id}   ${el.date}        ${el.description}        ${el.categery}               ${el.amount}`)
+            console.log(` ${el.id}   ${el.date}        ${el.description}        ${el.category}               ${el.amount}`)
         });
     }
  }
@@ -127,8 +127,8 @@ function updateExpanse(options){
     if(options.id==el.id){
         if(options.description!=undefined)
              el.description=options.description
-        if(options.category!=undefined&&!isNaN(options.category))
-            el.amount=parseFloat(options.amount)
+        if(options.category!=undefined)
+            el.category=options.category
         if(options.amount!=undefined&&!isNaN(options.amount))
             el.amount=parseFloat(options.amount)
     }
