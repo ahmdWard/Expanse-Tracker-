@@ -28,7 +28,7 @@ function writeCvs(){
         const values = headers.map(header => JSON.stringify(row[header] || ""));
         cvsRows.push(values.join(','));
     });
-    fs.writeFileSync(csvPath,cvsRows.join("\r\n"),'utf-8')
+    fs.writeFileSync(csvPath,cvsRows.join("\r\n"),'utf-8') // \r\n for microsoft user \n for mac or unix but microsoft is bullshit :"
 
 }
 function exportToCsv() {
