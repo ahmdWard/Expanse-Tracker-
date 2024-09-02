@@ -35,46 +35,46 @@ A command-line interface (CLI) application for managing expenses. This project a
 ### Adding a New Expense
 
 ```bash
-node index.js add --description "<description>" --category "<category>" --amount <amount>
+node app.js add --description "<description>" --category "<category>" --amount <amount>
 ```
 ### Listing All Expenses
 
 ```bash
-node index.js list
+node app.js list
 ```
 ### Getting a Summary of All Expenses
 
 ```bash
-node index.js summary
+node app.js summary
 ```
 ### Getting a Summary of Expenses by Category
 
 ```bash
-node index.js summary-category --category "<category>"
+node app.js summary-category --category "<category>"
 ```
 
 ### Getting a Summary of Expenses for a Specific Month
 
 ```bash 
-node index.js summary-month --month <month>
+node app.js summary-month --month <month>
 ```
 
 ### Deleting an Expense
 
 ```bash
-node index.js delete --id <id>
+node app.js delete --id <id>
 ```
 
 ### Updating an Expense
 
 ```bash
-node index.js update --id <id> [--description "<description>"] [--category "<category>"] [--amount <amount>]
+node app.js update --id <id> [--description "<description>"] [--category "<category>"] [--amount <amount>]
 ```
 
 ### Exporting Data to CSV
 
 ```bash
-node index.js export-csv
+node app.js export-csv
 ```
 
 ## Contributing
